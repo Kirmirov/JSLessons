@@ -9,13 +9,13 @@ let money = 1000000,
     numArr = num.toString().split(''),
     numResult = 1;
 
-numList.forEach(function(i){
-    numResult *= i;
+numArr.forEach(function(item){
+    numResult *= item;
 });
-exNumResult = numResult**3;
-numResultArr = exNumResult.toString().split('');
+let exNumResult = numResult**3;
+let numResultArr = exNumResult.toString().split('');
 
-//low block
+//Low block
 console.log(typeof money);
 console.log(typeof income);
 console.log(typeof deposit);
@@ -27,7 +27,7 @@ console.log(budgetDay);
 // Hard block
 console.log(numResult);
 console.log(exNumResult);
-console.log(numResultList[0], numResultList[1]);
+console.log(numResultArr[0], numResultArr[1]);
 
 
 
