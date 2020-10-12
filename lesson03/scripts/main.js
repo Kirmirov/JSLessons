@@ -15,12 +15,6 @@ let money = +prompt('Ваш месячный доход?'),
     numArr = num.toString().split(''),
     numResult = 1;
 
-numArr.forEach(function(item){
-    numResult *= item;
-});
-let exNumResult = numResult**3;
-let numResultArr = exNumResult.toString().split('');
-
 if(budgetMonth >= 1200) answer = 'У вас высокий уровень дохода';
 if(budgetMonth >= 600 && budgetMonth < 1200) answer = 'У вас средний уровень дохода';
 if(budgetMonth < 600 && budgetMonth >= 0) answer = 'К сожалению у вас уровень дохода ниже среднего';
