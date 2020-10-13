@@ -11,8 +11,7 @@ function editString(string){
     };
     let strTrim = string.trim();
     if(strTrim.length >= limit){
-        let cutString = strTrim.slice(0, limit);
-        return cutString + '...'; 
+        return strTrim.slice(0, limit) + '...'; 
     };
     return strTrim;
 }
