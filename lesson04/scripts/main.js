@@ -6,14 +6,10 @@ let shortString = '   А роза упала на лапу Азора',
 
 
 function editString(string){
-    if(typeof string != 'string'){
-        return alert ('Неверный формат данных');
-    };
+    if(typeof string != 'string') return alert ('Неверный формат данных');
     let strTrim = string.trim();
-    if(strTrim.length >= limit){
-        return strTrim.slice(0, limit) + '...'; 
-    };
-    return strTrim;
+    if(strTrim.length >= limit) return strTrim.slice(0, limit) + '...'; 
+    else return strTrim;
 }
 
 console.log(editString(shortString));
