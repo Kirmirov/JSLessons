@@ -1,43 +1,22 @@
-let money = +prompt('Ваш месячный доход?'), 
-    income = '2000000', 
-    addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую'),
-    deposit = confirm('Есть ли у вас депозит в банке?'), 
-    mission = 100000, 
-    realyExp = prompt('Какие обязательные расходы вы планируете в месяце?'),
-    realyAmount = +prompt('Во сколько это обойдется?'),
-    fanExp = prompt('Какие обязательные расходы вы планируете в месяце?'),
-    fanAmount = +prompt('Во сколько это обойдется?'),
-    period = 9,
-    accumulatedMonth = getAccumulatedMonth (money, realyAmount, fanAmount, getExpensesMonth),
-    budgetDay = accumulatedMonth/30;
-    
-getExpensesMonth (realyAmount, fanAmount);
+let shortString = '   А роза упала на лапу Азора',
+    longString = 'На краю дороги стоял дуб. Он был, вероятно, в десять раз старше берез, составлявших лес, в десять раз толще и в два раза выше каждой березы. Это был огромный, в два обхвата дуб, с обломанными суками и корой, заросшей старыми болячками. С огромными, неуклюже, несимметрично растопыренными корявыми руками и пальцами, он старым, сердитым и презрительным уродом стоял между улыбающимися березами. Только он один не хотел подчиниться обаянию весны и не хотел видеть ни весны, ни солнца',
+    notString = 4949494949494,
+    limit = 30;
 
-function showTypeOf (data){
-    return typeof data;
-};
 
-function getExpensesMonth (firstExp, secondExp){
-    return firstExp + secondExp;
-};
 
-function getAccumulatedMonth (money, firstExp, secondExp, callback){
-    return money - callback(firstExp, secondExp);
-};
+function editString(string){
+    if(typeof string != 'string'){
+        return alert ('Неверный формат данных');
+    };
+    let strTrim = string.trim();
+    if(strTrim.length >= limit){
+        let cutString = strTrim.slice(0, limit);
+        return cutString + '...'; 
+    };
+    return strTrim;
+}
 
-function getTargetMonth (mission, accumulatedMonth){
-    return Math.ceil(mission/accumulatedMonth);
-};
-
-function getStatusIncome (income){
-    if(income) return true;
-    else return false;
-};
-
-console.log(showTypeOf(money));
-console.log(showTypeOf(income));
-console.log(showTypeOf(deposit));
-console.log(getTargetMonth(mission, accumulatedMonth));
-console.log(accumulatedMonth);
-console.log(budgetDay);
-console.log(getStatusIncome(income));
+console.log(editString(shortString));
+console.log(editString(longString));
+console.log(editString(notString));
