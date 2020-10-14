@@ -25,6 +25,7 @@ function start(){
         deposit = confirm('Есть ли у вас депозит в банке?');
         expenses = getExpensesMonth();
         accumulatedMonth = getAccumulatedMonth(money, expenses);
+        status = getStatusIncome(accumulatedMonth);
         result = getTargetMonth(mission, accumulatedMonth);
         budgetDay = accumulatedMonth/30;
     }
@@ -55,9 +56,11 @@ function getTargetMonth (mission, accumulatedMonth){
         else return 'Цель не будет достигнута';
 };
 
-function getStatusIncome (income){
-    if(income) return true;
-    else return false;
+function getStatusIncome (budgetMonth){
+    if(budgetMonth >= 1200) return 'У вас высокий уровень дохода';
+    else if(budgetMonth >= 600 && budgetMonth < 1200) return 'У вас средний уровень дохода';
+    else if(budgetMonth < 600 && budgetMonth >= 0) return 'К сожалению у вас уровень дохода ниже среднего';
+    else if (budgetMonth < 0) return 'Что то пошло не так';
 };
 
 console.log(showTypeOf(money));
@@ -65,6 +68,7 @@ console.log(showTypeOf(income));
 console.log(showTypeOf(deposit));
 console.log('Расходы за месяц составили ' + expenses + ' рублей');
 console.log('Бюджет в месяц составляет ' + accumulatedMonth + ' рублей');
+console.log(addExpenses.split(','));
 console.log(result);
 console.log('Дневной бюджет составляет ' + budgetDay + ' рублей');
-console.log(getStatusIncome(income));
+console.log(status);
