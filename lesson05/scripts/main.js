@@ -50,8 +50,8 @@ function getAccumulatedMonth (money, expenses){
 };
 
 function getTargetMonth (mission, accumulatedMonth){
-    result = Math.ceil(mission/accumulatedMonth);
-        if(result >= 0) return 'Цель будет достигнута через ' + result + ' месяцев';
+    let res = Math.ceil(mission/accumulatedMonth);
+        if(res >= 0) return 'Цель будет достигнута через ' + res + ' месяцев';
         else return 'Цель не будет достигнута';
 };
 
