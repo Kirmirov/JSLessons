@@ -1,4 +1,17 @@
 'use strict'
+const calculateBtn = document.getElementById('start'),
+    plusIncomeBtn = document.getElementsByTagName('button')[0],
+    plusExpensesBtn = document.getElementsByTagName('button')[1],
+    depositCheck = document.querySelector('#deposit-check'),
+    incomeItemList = document.querySelectorAll('.additional_income-item'),
+    valueInputList = document.querySelectorAll('[class*="value"]'),
+    monthAmountInput = document.querySelector('input.salary-amount'),
+    addIncomeInput = document.querySelector('input.income-title'),
+    addAmountInput = document.querySelector('input.income-amount'),
+    mandatoryExInput = document.querySelector('input.expenses-title'),
+    mandatoryAmountInput = document.querySelector('input.expenses-amount'),
+    addExInput = document.querySelector('input.additional_expenses-item'),
+    targetInput = document.querySelector('input.target-amount');
 
 let money = +prompt('Укажите Ваш ежемесячный доход'), 
     appData = {
@@ -87,20 +100,6 @@ let money = +prompt('Укажите Ваш ежемесячный доход'),
             return string;
         }
     };
-
-const calculateBtn = document.getElementById('start'),
-    plusIncomeBtn = document.getElementsByTagName('button')[0],
-    plusExpensesBtn = document.getElementsByTagName('button')[1],
-    depositCheck = document.querySelector('#deposit-check'),
-    incomeItemList = document.querySelectorAll('.additional_income-item'),
-    valueInputList = document.querySelectorAll('[class*="value"]'),
-    monthAmountInput = document.querySelector('input.salary-amount'),
-    addIncomeInput = document.querySelector('input.income-title'),
-    addAmountInput = document.querySelector('input.income-amount'),
-    mandatoryExInput = document.querySelector('input.expenses-title'),
-    mandatoryAmountInput = document.querySelector('input.expenses-amount'),
-    addExInput = document.querySelector('input.additional_expenses-item'),
-    targetInput = document.querySelector('input.target-amount');
 
 appData.asking(2);
 appData.getExpensesMonth();
