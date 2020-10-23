@@ -44,7 +44,7 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
         },
         getAddExpenses: function(){
             let addExpenses = additionalExpensesItem.value.split(',');
-            addExpenses.forEach(function(item){
+            addExpenses.forEach((item) => {
                 item = item.trim();
                 if(item !== ''){
                     appData.addExpenses.push(item);
@@ -52,7 +52,7 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
             });
         },
         getExpenses: function(){
-            expensesItems.forEach(function(item){
+            expensesItems.forEach((item) => {
                 let itemExpenses = item.querySelector('.expenses-title').value;
                 let amountExpenses = item.querySelector('.expenses-amount').value;
                 if(itemExpenses !== '' && amountExpenses !== ''){
@@ -66,7 +66,7 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
             }
         },
         getIncome: function(){
-            incomeItems.forEach(function(item){
+            incomeItems.forEach((item) => {
                 let itemIncome = item.querySelector('.income-title').value;
                 let amountIncome = item.querySelector('.income-amount').value;
                 if(itemIncome !== '' && amountIncome !== ''){
@@ -79,7 +79,7 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
             appData.budgetDay = Math.ceil(appData.budgetMonth / 30);
         },
         getAddIncome: function(){
-            incomeItemList.forEach(function(item){
+            incomeItemList.forEach((item) => {
                 let itemValue = item.value.trim(); 
                 if(itemValue !== ''){
                     appData.addIncome.push(itemValue);
@@ -97,7 +97,7 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
             valueInputList[4].value = appData.addExpenses.join(', ');
             valueInputList[5].value = appData.calsSavedMoney();
             valueInputList[6].value = appData.getTargetMonth();
-            periodSelect.addEventListener('input', function(){
+            periodSelect.addEventListener('input', () => {
                 valueInputList[5].value = appData.budgetMonth * periodSelect.value;
             });
         },
