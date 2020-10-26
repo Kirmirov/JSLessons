@@ -1,34 +1,24 @@
-<!doctype html>
-<html lang="ru">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset="UTF-8">
+    <meta charset="UTF-8">
 	<meta name="viewport"
 				content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>ToDo</title>
-
-	<link rel="stylesheet" type="text/css" href="css/normalize.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>Authorisation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
+    <div class="user-name">Здравствуйте Аноним</div>
+    <div class="button-box">
+        <button class="registration">Регистрация</button>
+        <button class="authorisation">Авторизация</button>
+    </div>
+    <ul class="user-list">
 
-<header class="header">
-	<form class="todo-control">
-		<label><input class="header-input" type="text" placeholder="Какие планы?"></label>
-		<button class="header-button" id="add"></button>
-	</form>
-</header>
-
-<div class="todo-container">
-
-	<ul class="todo todo-list" id="todo">
-		
-	</ul>
-	<ul class="todo todo-completed" id="completed">
-		
-	</ul>
-</div>
-
-<script src="main.js"></script>
+    </ul>
+    <script src="main.js"></script>
 </body>
 </html>
