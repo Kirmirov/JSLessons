@@ -43,8 +43,8 @@ function hangListenerForDeletBtn (elementHTML){
     const todoRemoveBtn = elementHTML.querySelector('.todo-remove');
     todoRemoveBtn.addEventListener('click', () => {
         let textTodo = todoRemoveBtn.closest('li.todo-item').querySelector('.text-todo').textContent;
-        todoData.forEach((i) => {
-            if(i.value == textTodo){
+        todoData.forEach((item) => {
+            if(item.value == textTodo){
                 todoData.splice(todoData.indexOf(item), 1);
                 localStorage.setItem('todoData', JSON.stringify(todoData));
                 render();
