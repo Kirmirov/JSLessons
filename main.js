@@ -10,7 +10,7 @@ let todoData = [];
 render();
 
 function render (){
-    if(JSON.parse(localStorage.getItem("todoData")).length !== 0){
+    if(JSON.parse(localStorage.getItem("todoData")) != null){
         todoData = JSON.parse(localStorage.getItem("todoData"));
     }
     todoList.textContent = '';
