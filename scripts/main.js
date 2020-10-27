@@ -1,5 +1,6 @@
 'use strict'
-const startBtn = document.getElementById('start'), //кнопка старт  
+const startBtn = document.querySelector('#start'), //кнопка рассчитать
+    cancelBtn = document.querySelector('#cancel'),  
     plusIncomeBtn = document.getElementsByTagName('button')[0], // кнопка добавить ряд в секции доп заработок
     plusExpensesBtn = document.getElementsByTagName('button')[1], // кнопка добавить ряд в секции доп расходы
     depositCheck = document.querySelector('#deposit-check'), //чек-бокс депозит
@@ -33,14 +34,13 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
         budgetDay: 0,
         budgetMonth: 0,
         expensesMonth: 0,
-
         start: () => {
              if (salaryAmount.value === '') {
                  startBtn.disabled = true;
                  return;
             }
-            appData.budget = +salaryAmount.value;
-                       
+            this.budget = +salaryAmount.value;
+            
             appData.getAddExpenses();
             appData.getExpenses();
             appData.getExpensesMonth();
@@ -49,6 +49,8 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
             appData.getAddIncome();
 
             appData.showResult();
+
+            appData.blockInputText();
         },
         getAddExpenses: () => {
             let addExpenses = additionalExpensesItem.value.split(',');
@@ -83,7 +85,7 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
             });
         },
         getBudget: () => {
-            appData.budgetMonth = appData.budget + appData.incomeMonth - appData.expensesMonth;
+            appData.budgetMonth = this.budget + appData.incomeMonth - appData.expensesMonth;
             appData.budgetDay = Math.ceil(appData.budgetMonth / 30);
         },
         getAddIncome: () => {
@@ -147,6 +149,56 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
                 plusExpensesBtn.style.display = 'none';
             }
         },
+        resetAll: () => {
+          let inputText = document.querySelectorAll('[type="text"]:not(.result-total)');
+          let inputAll = document.querySelectorAll('input:not(.period-select)');
+          startBtn.disabled = false;
+
+          inputAll.forEach(element => {
+            element.value = '';    
+          });
+        
+          inputText.forEach(element => {
+            element.disabled = false;
+          });
+
+          this.budget = 0;
+          appData.income = {};
+          appData.addIncome = [];
+          appData.expenses = {};
+          appData.addExpenses = [];
+          appData.incomeMonth = 0;
+          appData.deposit = false;
+          appData.persentDeposite = 0;
+          appData.moneyDeposite = 0;
+          appData.budgetDay = 0;
+          appData.budgetMonth = 0;
+          appData.expensesMonth = 0;
+
+          startBtn.style.display = 'block';
+          cancelBtn.style.display = 'none';
+          periodSelect.value = 1;
+          rangeAmount.textContent = periodSelect.value;
+
+          expensesItems.forEach((item, k) => {
+            if(k !== 0) item.remove();
+          });
+          plusExpensesBtn.style.display = 'block';
+
+          incomeItems.forEach((item, k) => {
+            if(k !== 0) item.remove();
+          });
+          plusIncomeBtn.style.display = 'block';         
+        },
+        blockInputText: () => {
+          let inpitText = document.querySelectorAll('[type="text"]:not(.result-total)');
+
+          inpitText.forEach(element => {
+            element.disabled = true;
+          });
+          startBtn.style.display = 'none';
+          cancelBtn.style.display = 'block';
+        },
         getRange: () => {
             rangeAmount.innerHTML = periodSelect.value;
         },
@@ -178,12 +230,13 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
 
 appData.hangListener();
 
-start.addEventListener('click', appData.start.bind(appData));
+startBtn.addEventListener('click', appData.start.bind(appData));
+cancelBtn.addEventListener('click', appData.resetAll.bind(appData));
 salaryAmount.addEventListener('input', () => {
-  if (salaryAmount.value !== '') startBtn.disabled = false;  
+  if (salaryAmount.value !== '') startBtn.disabled = false;
   else startBtn.disabled = true;
 });
 
 plusExpensesBtn.addEventListener('click', appData.addExpensesBlock);
 plusIncomeBtn.addEventListener('click', appData.addIncomeBlock);
-periodSelect.addEventListener('input', appData.getRange);
+periodSelect.addEventListener('input', appData.getRange.bind(appData));
