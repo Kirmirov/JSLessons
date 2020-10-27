@@ -1,5 +1,5 @@
 'use strict'
-const start = document.getElementById('start'), //кнопка старт  
+const startBtn = document.getElementById('start'), //кнопка старт  
     plusIncomeBtn = document.getElementsByTagName('button')[0], // кнопка добавить ряд в секции доп заработок
     plusExpensesBtn = document.getElementsByTagName('button')[1], // кнопка добавить ряд в секции доп расходы
     depositCheck = document.querySelector('#deposit-check'), //чек-бокс депозит
@@ -35,6 +35,12 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
         expensesMonth: 0,
 
         start: () => {
+             if (salaryAmount.value === '') {
+                 startBtn.disabled = true;
+                 return;
+            }
+            appData.budget = +salaryAmount.value;
+                       
             appData.getAddExpenses();
             appData.getExpenses();
             appData.getExpensesMonth();
@@ -172,10 +178,10 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
 
 appData.hangListener();
 
-start.addEventListener('click', () => {
-    appData.budget = +salaryAmount.value;
-    if(appData.isNumber(appData.budget) && !appData.isEmpty(appData.budget)) appData.start();
-    else salaryAmount.value = '';
+start.addEventListener('click', appData.start.bind(appData));
+salaryAmount.addEventListener('input', () => {
+  if (salaryAmount.value !== '') startBtn.disabled = false;  
+  else startBtn.disabled = true;
 });
 
 plusExpensesBtn.addEventListener('click', appData.addExpensesBlock);
