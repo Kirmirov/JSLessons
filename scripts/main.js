@@ -40,17 +40,13 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
                 return;
             }
             this.budget = +salaryAmount.value;
-            
             this.getExpenses();
             this.getIncome();
             this.getExpensesMonth();
             this.getAddExpenses();
             this.getAddIncome();
             this.getBudget();
-
-
             this.showResult();
-
             this.blockInputText();
         },
         getAddExpenses: function () {
@@ -158,7 +154,6 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
             inputAll.forEach(element => {
                 element.value = '';    
             });
-        
             inputText.forEach(element => {
                 element.disabled = false;
             });
