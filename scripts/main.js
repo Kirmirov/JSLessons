@@ -1,4 +1,4 @@
-
+'use strict'
 const startBtn = document.querySelector('#start'), //кнопка рассчитать
     cancelBtn = document.querySelector('#cancel'),
     plusIncomeBtn = document.getElementsByTagName('button')[0], // кнопка добавить ряд в секции доп заработок
@@ -47,25 +47,23 @@ class AppData {
         this.blockInputText();
     };
     getNamesIncExp (){
-        const count = item => {
-            let itemsList;
-            if(typeof item === "string"){
-                item = item.trim();
-                itemsList = this.addExpenses;
-            }else {
-                item = item.value.trim();
-                itemsList = this.addIncome;
+            const addItem = (newArr) => {
+                let arr = [];
+                newArr.forEach((e) => {
+                    e = e.trim();
+                    if (e !== "") arr.push(e);
+                })
+               return arr;
             }
-
-            if (item !== '') {
-                itemsList.push(item);
-            }
-        };
-        let addExpenses = additionalExpensesItem.value.split(',');
-        addExpenses.forEach(count);
-        incomeItemList.forEach(count);
-    };
+            
+            let arrAddIncome  =[];
+            incomeItemList.forEach((e) => arrAddIncome.push(e.value));
+            this.addIncome = addItem(arrAddIncome);
+            this.addExpenses = addItem(additionalExpensesItem.value.split(","));
+    }; 
     getExpInc () {
+        incomeItems = document.querySelectorAll('.income-items'),
+        expensesItems = document.querySelectorAll('.expenses-items');
         const count = item => {
             const titleClass = item.className.split('-')[0];        
             const itemTitle = item.querySelector(`.${titleClass}-title`).value;
@@ -74,8 +72,8 @@ class AppData {
                 this[titleClass][itemTitle] = itemAmount;
             }
         }; 
-        incomeItems.forEach(count);
         expensesItems.forEach(count);
+        incomeItems.forEach(count);
         for (let key in this.income) {
             this.incomeMonth += this.income[key];
         }
@@ -107,11 +105,9 @@ class AppData {
     getTargetMonth () {
         return Math.ceil(targetAmount.value / this.budgetMonth);
     };
-    addPlusBlock (){
-        const titleClass = this.parentNode.className.trim();
-        let itemsList;
-        if(titleClass === 'income') itemsList = incomeItems;
-        else if (titleClass === 'expenses') itemsList = expensesItems;
+    addPlusBlock (itemsList){
+        
+        const titleClass = itemsList[0].className.split('-')[0];
 
         const cloneItem = itemsList[0].cloneNode(true);
         cloneItem.childNodes[1].addEventListener('input', () => {
@@ -122,10 +118,11 @@ class AppData {
         });
         cloneItem.querySelector(`.${titleClass}-title`).value = '';
         cloneItem.querySelector(`.${titleClass}-amount`).value = '';
-        itemsList[0].parentNode.insertBefore(cloneItem, this);
+        const plusBtn = document.querySelector(`.${titleClass}_add`);
+        itemsList[0].parentNode.insertBefore(cloneItem, plusBtn);
 
-        itemsList =  document.querySelectorAll(`.${titleClass}-items`);
-        if (itemsList.length === 3) this.style.display = 'none';
+        itemsList = document.querySelectorAll(`.${titleClass}-items`);
+        if (itemsList.length === 3) plusBtn.style.display = 'none';
     };
     resetAll () {
         let inputText = document.querySelectorAll('[type="text"]:not(.result-total)');
@@ -204,8 +201,12 @@ class AppData {
             if (salaryAmount.value !== '') startBtn.disabled = false;
             else startBtn.disabled = true;
         });
-        plusExpensesBtn.addEventListener('click', this.addPlusBlock);
-        plusIncomeBtn.addEventListener('click', this.addPlusBlock);
+        plusExpensesBtn.addEventListener('click', () => {
+            this.addPlusBlock(expensesItems);
+        });
+        plusIncomeBtn.addEventListener('click', () => {
+            this.addPlusBlock(incomeItems); 
+        });
         periodSelect.addEventListener('input', this.getRange.bind(this));
     };
 };
