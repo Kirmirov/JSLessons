@@ -95,7 +95,7 @@ getExpensesMonth () {
     }
 };
 getBudget () {
-    const monthDeposit = +this.moneyDeposit + (+this.percentDeposit / 100);
+    const monthDeposit = this.moneyDeposit * (this.percentDeposit / 100);
     this.budgetMonth = (this.budget + this.incomeMonth) - this.expensesMonth + monthDeposit;
     this.budgetDay = Math.floor(this.budgetMonth / 30);
 };
@@ -153,8 +153,8 @@ resetAll () {
     this.addExpenses = [];
     this.incomeMonth = 0;
     this.deposit = false;
-    this.persentDeposite = 0;
-    this.moneyDeposite = 0;
+    this.persentDeposit = 0;
+    this.moneyDeposit = 0;
     this.budgetDay = 0;
     this.budgetMonth = 0;
     this.expensesMonth = 0;
@@ -163,6 +163,9 @@ resetAll () {
     cancelBtn.style.display = 'none';
     periodSelect.value = 1;
     rangeAmount.textContent = periodSelect.value;
+    depositBank.style.display = 'none';
+    depositAmount.style.display = 'none';
+    depositCheck.checked = false;
 
     expensesItems.forEach((item, k) => {
         if (k !== 0) item.remove();
@@ -214,8 +217,8 @@ changePercent() {
 };
 getInfoDeposit () {
     if (this.deposit) {
-        this.percentDeposit = depositPercent.value;
-        this.moneyDeposit = depositAmount.value;
+        this.percentDeposit = +depositPercent.value;
+        this.moneyDeposit = +depositAmount.value;
     }
 };
 depositHandler() {
