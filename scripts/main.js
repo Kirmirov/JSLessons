@@ -23,6 +23,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
     let timerId = setInterval( () => {    
         let timer = getTimeRemaning();
+        timerHours.style.color = 'red';
+        timerMinutes.style.color = 'red';
+        timerSeconds.style.color = 'red';
         timerHours.textContent = formatTime(timer.hours);
         timerMinutes.textContent = formatTime(timer.minutes);
         timerSeconds.textContent = formatTime(timer.seconds);
@@ -36,6 +39,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }, 1000);
 
     };
-    countTimer('31 december 2020');
+    countTimer('31 december 2019');
 
 });
