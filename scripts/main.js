@@ -22,19 +22,19 @@ let incomeItems = document.querySelectorAll('.income-items'),
 expensesItems = document.querySelectorAll('.expenses-items');
 
 class AppData {
-constructor(){
-    this.income = {};
-    this.incomeMonth = 0;
-    this.addIncome = [];
-    this.expenses = {};
-    this.addExpenses = [];
-    this.deposit = false;
-    this.percentDeposit = 0;
-    this.moneyDeposit = 0;
-    this.budget = 0;
-    this.budgetDay = 0;
-    this.budgetMonth = 0;
-    this.expensesMonth = 0;
+    constructor(){
+        this.income = {};
+        this.incomeMonth = 0;
+        this.addIncome = [];
+        this.expenses = {};
+        this.addExpenses = [];
+        this.deposit = false;
+        this.percentDeposit = 0;
+        this.moneyDeposit = 0;
+        this.budget = 0;
+        this.budgetDay = 0;
+        this.budgetMonth = 0;
+        this.expensesMonth = 0;
 };
 
 start () {
@@ -56,6 +56,7 @@ start () {
     this.getBudget();
     this.showResult();
     this.blockInputText();
+    this.addCookie();
 };
 getNamesIncExp (){
         const addItem = (newArr) => {
@@ -96,17 +97,17 @@ getExpensesMonth () {
 };
 getBudget () {
     const monthDeposit = this.moneyDeposit * (this.percentDeposit / 100);
-    this.budgetMonth = (this.budget + this.incomeMonth) - this.expensesMonth + monthDeposit;
+    this.budgetMonth = (this.budget + this.incomeMonth) + monthDeposit - this.expensesMonth;
     this.budgetDay = Math.floor(this.budgetMonth / 30);
 };
 showResult () {
-    valueInputList[0].value = this.budgetMonth;
-    valueInputList[1].value = this.budgetDay;
-    valueInputList[2].value = this.expensesMonth;
-    valueInputList[3].value = this.addIncome.join(', ');
-    valueInputList[4].value = this.addExpenses.join(', ');
-    valueInputList[5].value = this.calsSavedMoney();
-    valueInputList[6].value = this.getTargetMonth();
+    valueInputList[0].value = this.budgetMonth; // поле Доход за месяц
+    valueInputList[1].value = this.budgetDay; // поле Дневной бюджет
+    valueInputList[2].value = this.expensesMonth; // поле Расходы за месяц
+    valueInputList[3].value = this.addIncome.join(', '); // поле Возможные доходы
+    valueInputList[4].value = this.addExpenses.join(', ');// поле Возможные расходы
+    valueInputList[5].value = this.calsSavedMoney(); // поле Накопления за период
+    valueInputList[6].value = this.getTargetMonth(); // 
     periodSelect.addEventListener('input', () => {
         valueInputList[5].value = this.budgetMonth * periodSelect.value;
     });
@@ -135,6 +136,7 @@ addPlusBlock (itemsList){
     if (itemsList.length === 3) plusBtn.style.display = 'none';
 };
 resetAll () {
+    this.removeStoCook();
     let inputText = document.querySelectorAll('[type="text"]:not(.result-total)');
     let inputAll = document.querySelectorAll('input:not(.period-select)');
     startBtn.disabled = false;
@@ -206,6 +208,72 @@ hangListenerForNumb () {
         });
     }
 };
+setCookie(key, value, year, month, day){
+    let cookieStr = `${key}=${value}`;
+    if(year){
+        const date = new Date(year, month, day);
+        cookieStr += `; expires=${date.toGMTString()}`;
+    }
+    document.cookie = cookieStr;
+};
+addCookie(){
+    this.setCookie('bugetMonth', valueInputList[0].value, 2020, 12, 30);
+    this.setCookie('budgetDay', valueInputList[1].value, 2020, 12, 30);
+    this.setCookie('expensesMonth', valueInputList[2].value, 2020, 12, 30);
+    this.setCookie('addIncome', valueInputList[3].value, 2020, 12, 30);
+    this.setCookie('addExpense', valueInputList[4].value, 2020, 12, 30);
+    this.setCookie('savedMoney', valueInputList[5].value, 2020, 12, 30);
+    this.setCookie('targetMonth', valueInputList[6].value, 2020, 12, 30);
+    this.setCookie('isLoad', 'true');
+
+    localStorage.setItem('bugetMonth', valueInputList[0].value);
+    localStorage.setItem('budgetDay', valueInputList[1].value);
+    localStorage.setItem('expensesMonth', valueInputList[2].value);
+    localStorage.setItem('addIncome', valueInputList[3].value);
+    localStorage.setItem('addExpense', valueInputList[4].value);
+    localStorage.setItem('savedMoney', valueInputList[5].value);
+    localStorage.setItem('targetMonth', valueInputList[6].value);
+    localStorage.setItem('isLoad', 'true');
+};
+loadCookieStor() {
+    const arr = document.cookie.split(';');
+    const newCookie = {};
+    arr.forEach(el => {
+        let item = el.trim().split('=');
+        newCookie[item[0]] =  item[1];  
+        if (localStorage.getItem(item[0]) !== item[1]) {
+            this.removeStoCook();
+            return;
+        }
+    });
+
+    if (localStorage.length !== 0) {
+        valueInputList[0].value = localStorage.getItem('bugetMonth');
+        valueInputList[1].value = localStorage.getItem('budgetDay');
+        valueInputList[2].value = localStorage.getItem('expensesMonth');
+        valueInputList[3].value = localStorage.getItem('addIncome');
+        valueInputList[4].value = localStorage.getItem('addExpense');
+        valueInputList[5].value = localStorage.getItem('savedMoney');
+        valueInputList[6].value = localStorage.getItem('targetMonth');
+        
+        depositCheck.disabled = true;
+        periodSelect.disabled = true;
+        blockInputText ();
+    }
+};
+removeStoCook() {
+
+    this.setCookie('bugetMonth', valueInputList[0].value, 2020, 12, -1);
+    this.setCookie('budgetDay', valueInputList[1].value, 2020, 12, -1);
+    this.setCookie('expensesMonth', valueInputList[2].value,2020, 12, -1);
+    this.setCookie('addIncome', valueInputList[3].value, 2020, 12, -1);
+    this.setCookie('addExpense', valueInputList[4].value, 2020, 12, -1);
+    this.setCookie('savedMoney', valueInputList[5].value, 2020, 12, -1);
+    this.setCookie('targetMonth', valueInputList[6].value, 2020, 12, -1);
+    this.setCookie('isLoad', 'true');
+
+    localStorage.clear();
+};
 changePercent() {
     const valueSelect = this.value;
         if (valueSelect === 'other') {
@@ -259,3 +327,4 @@ eventsListeners () {
 };
 const appData = new AppData ();
 appData.eventsListeners();
+appData.loadCookieStor();
