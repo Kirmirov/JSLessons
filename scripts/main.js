@@ -39,6 +39,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }, 1000);
 
     };
-    countTimer('31 december 2019');
+    countTimer('31 december 2020');
 
 });
