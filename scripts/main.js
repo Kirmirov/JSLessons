@@ -1,59 +1,53 @@
-const firstTimeBox = document.querySelector('.first'),
-    secondTimeBox = document.querySelector('.second');
-
-firstTimeBox.style = "color: red;";
-secondTimeBox.style = "color: blue;";
+const firstTimeBox = document.querySelector('.first');
 
 setInterval(start, 1000);
 
 function start () {
     let date = new Date();
-    let primaryString = buildTimeString (date);
-    firstTimeBox.innerHTML = formatTimeString(primaryString);
-    secondTimeBox.innerHTML = buildShortTime(date);
-}
+    firstTimeBox.innerHTML = goodDay (date);
+};
 
-function determineEnd (number, txt) {
-    let cases = [2, 0, 1, 1, 1, 2];
-    return number + ' ' + txt[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
-}
+function getDayPart (date){
+    let hour = date.getHours();
+    if(hour >= 5 && hour < 11) return 'Доброе утро';
+    else if(hour >= 11 && hour < 16) return 'Добрый день';
+    else if(hour >= 16 && hour <= 23) return 'Добрый вечер';
+    else return 'Доброй ночи';
+};
 
-function buildTimeString (date){
-    let primaryString = date.toLocaleString('ru', { //формирую первичную строку данных
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric'
-    });
-    return primaryString;
-}
+function getDayName (date){
+    let day = date.toLocaleString('ru', { weekday: 'long' });
+    let bigDay = date.toLocaleString('ru', { weekday: 'narrow' });
+    return day.replace(day[0], bigDay);
+};
 
-function formatTimeString (primaryString){
-    let splitStr = primaryString.split('.'); //делю сроку на 2 части по точке
-    let yearStr = splitStr[0].replace('г', 'года'); //меняю г на год в первой части строки
-    let timeList = splitStr[1].split(':');//делю вторую часть строки на двоеточию
-    let hourStr = determineEnd(+timeList[0].replace(',', '').trim(), ['час', 'часа', 'часов']); // подвтавляю очищенное значение как аргумент в функцию выбирающюу склонение
-    let minuteStr = determineEnd(+timeList[1].trim(), ['минута', 'минуты', 'минут']);
-    let secondStr = determineEnd(+timeList[2].trim(), ['секунда', 'секунды', 'секунд']);
-    return 'Сегодня '+ yearStr + ', ' + hourStr + ' ' + minuteStr + ' ' + secondStr;
-}
+function getCerrentTime (date){
+    let time = date.toLocaleString('ru', { hour: 'numeric', minute: 'numeric', second: 'numeric' }); 
+    return time;
+};
 
-function plusZero (number) {
-    let strNumber = '';
-    if(number < 10) strNumber = '0' + number;
-    else strNumber = number;
-    return strNumber;
-}
+function getDayBefore(date){
+    const newYear = date.getFullYear();
+        let nextDate = new Date(`December 31, ${newYear}`);
+        let msPerDay = 24*60*60*1000;
+        let daysLeft = Math.round((nextDate.getTime() - date.getTime())/msPerDay);
+        let dayname = '';
+        let ds = '' + daysLeft;
+        let dd = parseInt(ds.substr(ds.length-1));
+        if(daysLeft > 4 && daysLeft < 21) dayname = " дней";
+        else if(dd == 1) dayname = " день";
+        else if(dd == 2 || dd == 3 || dd == 4) dayname = " дня";
+        else dayname = " дней";
+        return `${daysLeft} ${dayname}`;
+};
 
-function buildShortTime (date) {
-    let day = +date.getDate();
-    let month = +date.getMonth() + 1;
-    let year = date.getFullYear();
-    let hour = +date.getHours();
-    let minute = +date.getMinutes();
-    let second = +date.getSeconds();
-    return plusZero(day) + '.' + plusZero(month) + '.' + year + ' - ' +  plusZero(hour) + ':' + plusZero(minute) + ':' + plusZero(second);
-}
+function goodDay(date){
+    let partOfDay = getDayPart(date);
+    let nameOfDay = getDayName(date);
+    let currentTime = getCerrentTime(date);
+    let dayBefore = getDayBefore(date);
+    return `${partOfDay} <br/>
+            Сегодня: ${nameOfDay} <br/>
+            Текущее время: ${currentTime} PM <br/>
+            До Нового года осталось ${dayBefore}`;
+};
