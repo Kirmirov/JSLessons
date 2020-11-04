@@ -12,7 +12,7 @@ window.addEventListener("DOMContentLoaded", () => {
             timeRemaining = (dateStop - dateNow) / 1000,
             seconds = Math.floor(timeRemaining % 60),
             minutes = Math.floor((timeRemaining / 60) % 60),
-            hours = Math.floor(timeRemaining / 60 / 60) / 24;
+            hours = Math.floor(timeRemaining / 60 / 60);
         return {timeRemaining, hours, minutes, seconds};
     }
 
@@ -23,15 +23,15 @@ window.addEventListener("DOMContentLoaded", () => {
 
     let timerId = setInterval( () => {    
         let timer = getTimeRemaning();
-        timerHours.style.color = 'red';
-        timerMinutes.style.color = 'red';
-        timerSeconds.style.color = 'red';
         timerHours.textContent = formatTime(timer.hours);
         timerMinutes.textContent = formatTime(timer.minutes);
         timerSeconds.textContent = formatTime(timer.seconds);
         
         if (timer.timeRemaining < 0) {
             clearInterval(timerId);
+            timerHours.style.color = 'red';
+            timerMinutes.style.color = 'red';
+            timerSeconds.style.color = 'red';
             timerHours.textContent = '00';
             timerMinutes.textContent = '00';
             timerSeconds.textContent = '00';
