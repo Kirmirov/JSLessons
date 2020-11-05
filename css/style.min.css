@@ -108,8 +108,8 @@ body menu {
 body .active-menu {
     -webkit-transition: 1s;
     transition: 1s;
-    -webkit-transform: translateX(100%);
-    transform: translateX(100%)
+    -webkit-transform: translateX(0);
+    transform: translateX(0)
 }
 
 body ul {
