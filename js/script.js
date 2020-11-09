@@ -56,7 +56,7 @@ class ToDo {
             for(let index in parentList.children) {
                 if(parentList.children[index] == selectedLi) selectedLiNumb = +index;
             }
-            const move = (Math.abs(selectedLiNumb - parentList.children.length) * 60) - 10;
+            const move = (Math.abs(selectedLiNumb - parentList.children.length) * selectedLi.scrollHeight);
             this.animate ({
                 duration: 500,
                 timing(timeFraction) {
@@ -73,7 +73,7 @@ class ToDo {
             for(let index in parentList.children) {
                 if(parentList.children[index] == selectedLi) selectedLiNumb = +index;
             }
-            const move = 0 - ((selectedLiNumb + 1) * 60);
+            const move = 0 - ((selectedLiNumb + 1) * selectedLi.scrollHeight);
             console.log(selectedLiNumb);
             this.animate ({
                 duration: 500,
