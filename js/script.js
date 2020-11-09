@@ -27,18 +27,16 @@ class ToDo {
             this.saveEdit();
             return;
         }
-        if(target.classList.contains('todo-remove')) this.deleteItem(target);
-        if(target.classList.contains('todo-complete')) this.completedItem(target);
+        if(target.classList.contains('todo-remove')) this.deleteItem(target.closest('.todo-item'), target.closest('.todo-item').key);
+        if(target.classList.contains('todo-complete')) this.completedItem(target.closest('.todo-item'), target.closest('.todo-item').key);
         if(target.classList.contains('todo-edit')) {
             this.isEditTodo = true;
             this.editItem(target);
         }
     };
-    deleteItem(deleteBtn){
-        const selectedLi = deleteBtn.closest('.todo-item');
-        const selectedLiKey = selectedLi.key;
+    deleteItem(selectedLi, selectedLiKey){
         this.animate ({
-            duration: 2000,
+            duration: 400,
             timing(timeFraction) {
                 return timeFraction;
             },
@@ -48,24 +46,47 @@ class ToDo {
         });
         
         this.todoData.delete(selectedLiKey);
-        setTimeout(this.render, 2100);
+        setTimeout(this.render.bind(this), 410);
     };
-    completedItem(selectedLiKey){
-        const selectedLi = deleteBtn.closest('.todo-item');
-        const selectedLiKey = selectedLi.key;
+    completedItem(selectedLi, selectedLiKey){
         this.todoData.get(selectedLiKey).completed = this.todoData.get(selectedLiKey).completed ? false : true;
         if(this.todoData.get(selectedLiKey).completed){
+            const parentList = selectedLi.closest('.todo-list');
+            let selectedLiNumb = 0;
+            for(let index in parentList.children) {
+                if(parentList.children[index] == selectedLi) selectedLiNumb = +index;
+            }
+            const move = (Math.abs(selectedLiNumb - parentList.children.length) * 60) - 10;
             this.animate ({
-                duration: 2000,
+                duration: 500,
                 timing(timeFraction) {
                     return timeFraction;
                 },
                 draw(progress) {
-                    selectedLi.style.opacity = 1 - progress;
-                }
-            });
+                    selectedLi.style.zIndex = "9";
+                    selectedLi.style.transform = `translateY(${move * progress}px)`;
+                    }
+                });
+        } else {
+            const parentList = selectedLi.closest('.todo-completed');
+            let selectedLiNumb = 0 ;
+            for(let index in parentList.children) {
+                if(parentList.children[index] == selectedLi) selectedLiNumb = +index;
+            }
+            const move = 0 - ((selectedLiNumb + 1) * 60);
+            console.log(selectedLiNumb);
+            this.animate ({
+                duration: 500,
+                timing(timeFraction) {
+                    return timeFraction;
+                },
+                draw(progress) {
+                    selectedLi.style.zIndex = "9";
+                    selectedLi.style.transform = `translateY(${move * progress}px)`;
+                    }
+                });
         }
-        this.render();
+        setTimeout(this.render.bind(this), 500);
     };
     editItem(editBtn){ 
         const selectedSpan = editBtn.closest('.todo-item').firstElementChild;
@@ -118,7 +139,7 @@ class ToDo {
                 <button class="todo-complete"></button>
             </div>
         `);
-        todoItem.completed ? this.todoCompleted.append(li) : this.todoList.append(li);
+        todoItem.completed ? this.todoCompleted.prepend(li) : this.todoList.prepend(li);
     };
     addToStorage() {
         localStorage.setItem('ToDo', JSON.stringify([...this.todoData]));
