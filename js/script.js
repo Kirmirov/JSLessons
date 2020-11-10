@@ -58,14 +58,6 @@ class ToDo {
                 if(parentList.children[index] == selectedLi) selectedLiNumb = +index;
             }
             const moveLength = (parentList.children.length - selectedLiNumb) * selectedLi.scrollHeight;
-        } else {
-            const parentList = selectedLi.closest('.todo-completed');
-            let selectedLiNumb = 0 ;
-            for(let index in parentList.children) {
-                if(parentList.children[index] == selectedLi) selectedLiNumb = +index;
-            }
-            const moveLength = 0 - ((selectedLiNumb + 1) * selectedLi.scrollHeight);
-        }
             this.animate ({
                 duration: 500,
                 timing(timeFraction) {
@@ -76,7 +68,24 @@ class ToDo {
                     selectedLi.style.transform = `translateY(${moveLength * progress}px)`;
                     }
                 });
-        
+        } else {
+            const parentList = selectedLi.closest('.todo-completed');
+            let selectedLiNumb = 0 ;
+            for(let index in parentList.children) {
+                if(parentList.children[index] == selectedLi) selectedLiNumb = +index;
+            }
+            const moveLength = 0 - ((selectedLiNumb + 1) * selectedLi.scrollHeight);
+            this.animate ({
+                duration: 500,
+                timing(timeFraction) {
+                    return timeFraction;
+                },
+                draw(progress) {
+                    selectedLi.style.zIndex = "9";
+                    selectedLi.style.transform = `translateY(${moveLength * progress}px)`;
+                    }
+                });
+        }
         setTimeout(this.render.bind(this), 500);
     };
     editItem(selectedSpan){
