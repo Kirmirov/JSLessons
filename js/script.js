@@ -51,31 +51,21 @@ class ToDo {
     completedItem(selectedLi, selectedLiKey){
         this.todoData.get(selectedLiKey).completed = this.todoData.get(selectedLiKey).completed ? false : true;
         
+        let moveLength;
+        const getNumbAtlist = (parentList) => {
+           for(let index in parentList.children) {
+                if(parentList.children[index] == selectedLi) return +index;
+            } 
+        }
         if(this.todoData.get(selectedLiKey).completed){
             const parentList = selectedLi.closest('.todo-list');
-            let selectedLiNumb = 0;
-            for(let index in parentList.children) {
-                if(parentList.children[index] == selectedLi) selectedLiNumb = +index;
-            }
-            const moveLength = (parentList.children.length - selectedLiNumb) * selectedLi.scrollHeight;
-            this.animate ({
-                duration: 500,
-                timing(timeFraction) {
-                    return timeFraction;
-                },
-                draw(progress) {
-                    selectedLi.style.zIndex = "9";
-                    selectedLi.style.transform = `translateY(${moveLength * progress}px)`;
-                    }
-                });
+            moveLength = (parentList.children.length - getNumbAtlist(parentList)) * selectedLi.scrollHeight;
         } else {
             const parentList = selectedLi.closest('.todo-completed');
-            let selectedLiNumb = 0 ;
-            for(let index in parentList.children) {
-                if(parentList.children[index] == selectedLi) selectedLiNumb = +index;
-            }
-            const moveLength = 0 - ((selectedLiNumb + 1) * selectedLi.scrollHeight);
-            this.animate ({
+            moveLength = 0 - ((getNumbAtlist(parentList) + 1) * selectedLi.scrollHeight);
+        }
+
+        this.animate ({
                 duration: 500,
                 timing(timeFraction) {
                     return timeFraction;
@@ -85,7 +75,7 @@ class ToDo {
                     selectedLi.style.transform = `translateY(${moveLength * progress}px)`;
                     }
                 });
-        }
+        
         setTimeout(this.render.bind(this), 500);
     };
     editItem(selectedSpan){
