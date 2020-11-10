@@ -38,7 +38,6 @@ window.addEventListener("DOMContentLoaded", () => {
             }
         }, 1000);
     };
-    
     countTimer('31 december 2020');
     // Header menu
     const toggleMenu = () => {
@@ -114,9 +113,7 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
     const anchor = document.querySelector('a[href*="service-block"]');
-    anchor.addEventListener('click', (evt) => {
-        smoothScroll(evt, anchor);
-    });
+    anchor.addEventListener('click', evt => smoothScroll(evt, anchor));
     //Tabs menu
     const tabs = () => {
         const tabHeader = document.querySelector('.service-header'),
@@ -159,13 +156,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
         const dot = document.querySelectorAll('.dot');
 
-        const prewSlide = (elem, index, strClass) => {
-            elem[index].classList.remove(strClass);
-        };
+        const prewSlide = (elem, index, strClass) => elem[index].classList.remove(strClass);
     
-        const nextSlide = (elem, index, strClass) => {
-            elem[index].classList.add(strClass);
-        };
+        const nextSlide = (elem, index, strClass) => elem[index].classList.add(strClass);
 
         let currentSlide = 0;
         const autoPlaySlide = () => {
@@ -181,13 +174,9 @@ window.addEventListener("DOMContentLoaded", () => {
         };
 
         let interval;
-        const startSlide = (time = 15000) => {
-            interval = setInterval(autoPlaySlide, time);
-        };
+        const startSlide = (time = 15000) => interval = setInterval(autoPlaySlide, time);
         
-        const stopSlide = () => {
-            clearInterval(interval);
-        };
+        const stopSlide = () => clearInterval(interval);
     
         slider.addEventListener('click', (evt) => {
             evt.preventDefault();
@@ -216,7 +205,6 @@ window.addEventListener("DOMContentLoaded", () => {
         slider.addEventListener('mouseover', (evt) => {
             if (evt.target.matches('.portfolio-btn') || 
                 evt.target.matches('.dot')) stopSlide();
-        
         });
 
         slider.addEventListener('mouseout', (evt) => {
@@ -226,4 +214,27 @@ window.addEventListener("DOMContentLoaded", () => {
         startSlide(1800);
     };
     slider();
+    //Replacement fotos
+    const changeFotos = () => {
+        const comandSection = document.querySelector('.command');
+        let oldSrc, target;
+        comandSection.addEventListener('mouseover', (evt) => {
+            target = evt.target;
+            if(target.classList.contains('command__photo')){
+                oldSrc = target.src;
+                target.src = target.dataset.img;
+            }
+        });
+        comandSection.addEventListener('mouseout', () => {
+            if(target.classList.contains('command__photo')) target.src = oldSrc;
+        });
+    };
+    changeFotos();
+    //Calculator
+    const calcValidate = () => {
+        const calcInputs = document.querySelectorAll('input.calc-item');
+    
+        calcInputs.forEach(item => item.addEventListener('input', () => item.value = item.value.replace(/\D/g, '')));
+    };
+    calcValidate();
 });
