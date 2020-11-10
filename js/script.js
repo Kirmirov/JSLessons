@@ -23,10 +23,7 @@ class ToDo {
     };
     handler(evt){
         let target = evt.target;
-        if(this.isEditTodo && target){
-            this.saveEdit();
-            return;
-        }
+        if(this.isEditTodo && target) this.saveEdit();
         if(target.classList.contains('todo-remove')) this.deleteItem(target.closest('.todo-item'), target.closest('.todo-item').key);
         if(target.classList.contains('todo-complete')) this.completedItem(target.closest('.todo-item'), target.closest('.todo-item').key);
         if(target.classList.contains('todo-edit')) {
@@ -37,7 +34,7 @@ class ToDo {
     deleteItem(selectedLi, selectedLiKey){
         this.animate ({
             duration: 400,
-            timing(timeFraction) {
+            timing (timeFraction) {
                 return timeFraction;
             },
             draw(progress) {
@@ -46,17 +43,18 @@ class ToDo {
         });
         
         this.todoData.delete(selectedLiKey);
-        setTimeout(this.render.bind(this), 410);
+        setTimeout(this.render.bind(this), 400);
     };
     completedItem(selectedLi, selectedLiKey){
         this.todoData.get(selectedLiKey).completed = this.todoData.get(selectedLiKey).completed ? false : true;
         
         let moveLength;
         const getNumbAtlist = (parentList) => {
-           for(let index in parentList.children) {
+            for(let index in parentList.children) {
                 if(parentList.children[index] == selectedLi) return +index;
             } 
-        }
+        };
+
         if(this.todoData.get(selectedLiKey).completed){
             const parentList = selectedLi.closest('.todo-list');
             moveLength = (parentList.children.length - getNumbAtlist(parentList)) * selectedLi.scrollHeight;
@@ -66,15 +64,15 @@ class ToDo {
         }
 
         this.animate ({
-                duration: 500,
-                timing(timeFraction) {
-                    return timeFraction;
-                },
-                draw(progress) {
-                    selectedLi.style.zIndex = "9";
-                    selectedLi.style.transform = `translateY(${moveLength * progress}px)`;
-                    }
-                });
+            duration: 500,
+            timing (timeFraction) {
+                return timeFraction;
+            },
+            draw(progress) {
+                selectedLi.style.zIndex = "9";
+                selectedLi.style.transform = `translateY(${moveLength * progress}px)`;
+            }
+        });
         
         setTimeout(this.render.bind(this), 500);
     };
