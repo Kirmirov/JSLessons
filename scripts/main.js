@@ -274,6 +274,55 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     };
     calculator (5000);
+    //forms validators
+    const form1Validator = new Validator({
+        selector: '#form1',
+        pattern: {
+            name: /[А-Яа-яЁё]/
+        },
+        method: {
+            'form1-name': [
+                ['notEmpty'],
+                ['pattern', 'name']
+            ],
+            'form1-phone': [
+                ['notEmpty'],
+                ['pattern', 'phone']
+            ],
+            'form1-email': [
+                ['notEmpty'],
+                ['pattern', 'email']
+            ]
+        }
+    });
+    form1Validator.init();
+
+    const form2Validator = new Validator({
+        selector: '#form2',
+        pattern: {
+            name: /[А-Яа-яЁё]/,
+            message: /[0-9А-Яа-яЁё,.]/
+        },
+        method: {
+            'form2-name': [
+                ['notEmpty'],
+                ['pattern', 'name']
+            ],
+            'form2-phone': [
+                ['notEmpty'],
+                ['pattern', 'phone']
+            ],
+            'form2-email': [
+                ['notEmpty'],
+                ['pattern', 'email']
+            ],
+            'form2-message': [
+                ['notEmpty'],
+                ['pattern', 'message']
+            ]
+        }
+    });
+    form2Validator.init();
     // animation pattern
     const animate = ({timing, draw, duration}, callback) => {
         let start = performance.now();
