@@ -92,7 +92,6 @@ window.addEventListener("DOMContentLoaded", () => {
             target = target.closest('.popup-content');
             if(!target) popup.style.display = 'none';
         });
-
     };
     popupMenu();
     //Smooth scroll
@@ -103,7 +102,7 @@ window.addEventListener("DOMContentLoaded", () => {
             behavior: 'smooth',
             block: 'start'
         });
-    }
+    };
     const anchor = document.querySelector('a[href*="service-block"]');
     anchor.addEventListener('click', evt => smoothScroll(evt, anchor));
     //Tabs menu
@@ -266,8 +265,7 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     };
     calculator (5000);
-
-    // animation pattern
+    //Animation pattern
     const animate = ({timing, draw, duration}, callback) => {
         let start = performance.now();
         requestAnimationFrame(function animate(time) {
@@ -280,7 +278,6 @@ window.addEventListener("DOMContentLoaded", () => {
             }
         });
     };
-
     const sendForm = (elementId) => {
         const erroMessage = 'Что то пошло не так...',
             loadMessage = 'Загрузка...',
@@ -358,8 +355,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
 
     };
+    sendForm('form1');
     sendForm('form2');
     sendForm('form3');
-
-
 });
