@@ -291,7 +291,7 @@ window.addEventListener("DOMContentLoaded", () => {
                                 () => elem.value = elem.value.replace(/[^А-Яа-яЁё ]/,''));
                                 break;
                             case 'user_email': elem.addEventListener('input',
-                                () => elem.value = elem.value.replace(/[^\w+@\w+\.\w{2,}$]/,''));
+                                () => elem.value = elem.value.replace(/[^\w@.]/,''));
                                 break;
                             case 'user_phone': elem.addEventListener('input',
                                 () => elem.value = elem.value.replace(/[^0-9+]/,''));
