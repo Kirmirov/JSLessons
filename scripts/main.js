@@ -12,7 +12,7 @@ window.addEventListener("DOMContentLoaded", () => {
             timeRemaining = (dateStop - dateNow) / 1000,
             seconds = Math.floor(timeRemaining % 60),
             minutes = Math.floor((timeRemaining / 60) % 60),
-            hours = Math.floor(timeRemaining / 60 / 60);
+            hours = Math.floor((timeRemaining / 60 / 60)/24);
         return {timeRemaining, hours, minutes, seconds};
     };
 
@@ -70,31 +70,23 @@ window.addEventListener("DOMContentLoaded", () => {
         popupBtn.forEach(elem => {
             elem.addEventListener('click', () => {
                 popup.style.display = 'block';
-                if (document.documentElement.clientWidth > 768){
-                    animation ();
+                if (document.documentElement.clientWidth > 768){ // disabling animation when the display is small
+                    const popupContent = popup.querySelector('.popup-content');
+                    animate ({
+                        duration: 400,
+                        timing(timeFraction) {
+                            return timeFraction;
+                        },
+                        draw(progress) {
+                            popupContent.style.opacity = progress * 1;
+                        }
+                    });
                 }
             });
         });
-        
         popupClose.addEventListener('click', () => {
             popup.style.display = 'none';
         });
-
-        const animation = () => {
-            const popupContent = popup.querySelector('.popup-content');
-            popupContent.style.opacity = '0';
-            let step = 0;
-            const popupAnimation = () => {
-                step += 0.05;
-                popupContent.style.opacity = step;
-                const myReq = requestAnimationFrame(popupAnimation);
-                if(step === 1){
-                    cancelAnimationFrame(myReq);
-                } 
-            }
-            popupAnimation();
-        };
-
         popup.addEventListener('click', (event) => {
             let target = event.target;
             target = target.closest('.popup-content');
@@ -274,55 +266,7 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     };
     calculator (5000);
-    //forms validators
-    const form1Validator = new Validator({
-        selector: '#form1',
-        pattern: {
-            name: /[А-Яа-яЁё]/
-        },
-        method: {
-            'form1-name': [
-                ['notEmpty'],
-                ['pattern', 'name']
-            ],
-            'form1-phone': [
-                ['notEmpty'],
-                ['pattern', 'phone']
-            ],
-            'form1-email': [
-                ['notEmpty'],
-                ['pattern', 'email']
-            ]
-        }
-    });
-    form1Validator.init();
 
-    const form2Validator = new Validator({
-        selector: '#form2',
-        pattern: {
-            name: /[А-Яа-яЁё]/,
-            message: /[0-9А-Яа-яЁё,.]/
-        },
-        method: {
-            'form2-name': [
-                ['notEmpty'],
-                ['pattern', 'name']
-            ],
-            'form2-phone': [
-                ['notEmpty'],
-                ['pattern', 'phone']
-            ],
-            'form2-email': [
-                ['notEmpty'],
-                ['pattern', 'email']
-            ],
-            'form2-message': [
-                ['notEmpty'],
-                ['pattern', 'message']
-            ]
-        }
-    });
-    form2Validator.init();
     // animation pattern
     const animate = ({timing, draw, duration}, callback) => {
         let start = performance.now();
@@ -336,4 +280,86 @@ window.addEventListener("DOMContentLoaded", () => {
             }
         });
     };
+
+    const sendForm = (elementId) => {
+        const erroMessage = 'Что то пошло не так...',
+            loadMessage = 'Загрузка...',
+            successMesage = 'Спасибо! Мы скоро свяжемся с Вами!';
+        //Validation form
+        const setValidation = (validatedForm) =>{
+                [...validatedForm].forEach((elem)=>{
+                    if(elem.tagName === 'INPUT'){
+                        switch(elem.name){
+                            case 'user_name': elem.addEventListener('input',
+                                () => elem.value = elem.value.replace(/[^А-Яа-яЁё ]/,''));
+                                break;
+                            case 'user_email': elem.addEventListener('input',
+                                () => elem.value = elem.value.replace(/[^\w+@\w+\.\w{2,}$]/,''));
+                                break;
+                            case 'user_phone': elem.addEventListener('input',
+                                () => elem.value = elem.value.replace(/[^0-9+]/,''));
+                                break;
+                            case 'user_message':elem.addEventListener('input',
+                                () => elem.value = elem.value.replace(/[^А-Яа-яЁё., ]/,''));
+                                break;
+                        default: console.error('Не верно названы поля формы!');
+                    }
+                }
+            });
+        };
+            
+        const form = document.getElementById(elementId);
+        setValidation(form);
+        const statusMessage = document.createElement('div');
+        statusMessage.style.cssText = 'font-size: 2rem;';
+        statusMessage.style.color = '#fff';
+        form.addEventListener('submit', (evt) => {
+            evt.preventDefault();
+            statusMessage.textContent = '';
+            form.appendChild(statusMessage);
+            statusMessage.insertAdjacentHTML('beforeend', `
+                <div class='loadingio-spinner-pulse-vurmag0hkuj'>
+                    <div class='ldio-3ckt5h1dy4j'>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            `);
+            const formData = new FormData(form);
+            let body = {};
+            for (let val of formData.entries()){
+                body[val[0]] = val[1];
+            }
+            postData(body, () => {
+                statusMessage.textContent = successMesage;
+                form.reset();
+            }, (error) => {
+                statusMessage.textContent = erroMessage;
+                console.error(error);
+            });
+        });
+
+        const postData = (body, outputData, errorData) => {
+            const request = new XMLHttpRequest();
+            request.addEventListener('readystatechange', () =>{
+                if(request.readyState !== 4){
+                    return;
+                } 
+                if(request.status === 200){
+                    outputData();
+                }else { 
+                    errorData();
+                } 
+            });
+            request.open('POST', './server.php');
+            request.setRequestHeader('Content-Type', 'application/json');
+            request.send(JSON.stringify(body));
+        }
+
+    };
+    sendForm('form2');
+    sendForm('form3');
+
+
 });
