@@ -312,7 +312,6 @@ window.addEventListener("DOMContentLoaded", () => {
         statusMessage.style.color = '#fff';
         form.addEventListener('submit', (evt) => {
             evt.preventDefault();
-            statusMessage.textContent = '';
             form.appendChild(statusMessage);
             statusMessage.insertAdjacentHTML('beforeend', `
                 <div class='loadingio-spinner-pulse-vurmag0hkuj'>
@@ -330,10 +329,16 @@ window.addEventListener("DOMContentLoaded", () => {
             }
             postData(body, () => {
                 statusMessage.textContent = successMesage;
+                setTimeout(()=>{
+                    statusMessage.textContent = '';
+                }, 5000);
                 form.reset();
             }, (error) => {
                 statusMessage.textContent = erroMessage;
                 console.error(error);
+                setTimeout(()=>{
+                    statusMessage.textContent = '';
+                }, 5000);
             });
         });
 
