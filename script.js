@@ -4,46 +4,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const select = document.getElementById('cars'),
         output = document.getElementById('output');
 
-    // select.addEventListener('change', () => {
-    //     const request = new XMLHttpRequest();
-    //     request.open('GET', './cars.json');
-    //     request.setRequestHeader('Content-type', 'application/json');
-    //     request.send();
-    //     request.addEventListener('readystatechange', () => {
-    //         if (request.readyState === 4 && request.status === 200) {
-    //             const data = JSON.parse(request.responseText);
-    //             data.cars.forEach(item => {
-    //                 if (item.brand === select.value) {
-    //                     const {brand, model, price} = item;
-    //                     output.innerHTML = `Тачка ${brand} ${model} <br>
-    //                     Цена: ${price}$`;
-    //                 }
-    //             });
-    //         } else {
-    //             output.innerHTML = 'Произошла ошибка';
-    //         }
-    //     });
-    // });
-
-    const getData = () => {
-        return new Promise ((resolve, reject) => {
+    const getDate = () => {
+        return new Promise((resolve, reject) => {
             const request = new XMLHttpRequest();
             request.open('GET', './cars.json');
             request.setRequestHeader('Content-type', 'application/json');
             request.send();
+            resolve(request);
+        });
+    };
+
+    const setListener = (request) =>{
+        return new Promise((resolve, reject) => {
             request.addEventListener('readystatechange', () => {
-                if (request.readyState === 4 && request.status === 200){
-                    const data = JSON.parse(request.responseText);
-                    resolve(data);
-                }else{
-                    
-                }
+                if (request.readyState !== 4) return;
+                if (request.status === 200) resolve(JSON.parse(request.responseText));
+                else reject();
             });
         });
     };
 
-    getData()
-    .then(data => {
+    const showResult = (data) => {
         data.cars.forEach(item => {
             if (item.brand === select.value) {
                 const {brand, model, price} = item;
@@ -51,7 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 Цена: ${price}$`;
             }
         });
-    })
-    .catch(err => console.log(err));
+    };
+
+    select.addEventListener('change', () => {
+        getDate()
+        .then(request => setListener(request))
+        .then(data => showResult(data))
+        .catch(output.innerHTML = 'Произошла ошибка');
+    });
 
 });
