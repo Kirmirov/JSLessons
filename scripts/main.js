@@ -346,7 +346,8 @@ window.addEventListener("DOMContentLoaded", () => {
                 for (let val of formData.entries()){
                     body[val[0]] = val[1];
                 }
-                resolve(body);
+                if(body.length !== 0) resolve(body);
+                else reject('Form is empty');
             });
         };
         const postData = (body) => {
@@ -358,7 +359,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 request.addEventListener('readystatechange', () =>{
                     if(request.readyState !== 4) return;
                     if(request.status === 200) resolve();
-                    else reject();
+                    else reject('Error');
                 });
             });
             
