@@ -322,19 +322,21 @@ window.addEventListener("DOMContentLoaded", () => {
 
             getBody(form)
             .then(body => postData(body))
-            .then(() => {
+            .then((response) => {
+                if(response.status !== 200) throw new Error('status is not 200')
                 statusMessage.textContent = successMesage;
                 form.reset();
                 setTimeout(() => {
                     statusMessage.textContent = '';
                 }, 5000);
-            }, () => {
+            })
+            .catch(() => {
                 statusMessage.textContent = erroMessage;
                 form.reset();
                 setTimeout(() => {
-                    statusMessage.textContent = '';
+                statusMessage.textContent = '';
                 }, 5000);
-            }).catch(error => console.error(error));
+            });
         });
         const getBody = (form) => {
             return new Promise ((resolve, reject) => {
@@ -343,22 +345,18 @@ window.addEventListener("DOMContentLoaded", () => {
                 for (let val of formData.entries()){
                     body[val[0]] = val[1];
                 }
-                resolve(body);
+                if(body.length !== 0) resolve(body);
+                else reject('Form is empty');
             });
         };
         const postData = (body) => {
-            return new Promise ((resolve, reject) => {
-                const request = new XMLHttpRequest();
-                request.open('POST', './server.php');
-                request.setRequestHeader('Content-Type', 'application/json');
-                request.send(JSON.stringify(body));
-                request.addEventListener('readystatechange', () =>{
-                    if(request.readyState !== 4) return;
-                    if(request.status === 200) resolve();
-                    else reject();
-                });
+            return fetch('./server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
             });
-            
         };
     };
     sendForm('form1');
