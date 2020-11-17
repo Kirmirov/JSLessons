@@ -282,21 +282,21 @@ window.addEventListener("DOMContentLoaded", () => {
             successMesage = 'Спасибо! Мы скоро свяжемся с Вами!';
         //Validation form
         const setValidation = (validatedForm) => {
-                [...validatedForm].forEach((elem) => {
-                    if(elem.tagName === 'INPUT'){
-                        switch(elem.name){
-                            case 'user_name': elem.addEventListener('input',
-                                () => elem.value = elem.value.replace(/[^А-Яа-яЁё ]/,''));
-                                break;
-                            case 'user_email': elem.addEventListener('input',
-                                () => elem.value = elem.value.replace(/[^\w@.]/,''));
-                                break;
-                            case 'user_phone': elem.addEventListener('input',
-                                () => elem.value = elem.value.replace(/[^0-9+]/,''));
-                                break;
-                            case 'user_message':elem.addEventListener('input',
-                                () => elem.value = elem.value.replace(/[^А-Яа-яЁё., ]/,''));
-                                break;
+            [...validatedForm].forEach((elem) => {
+                if(elem.tagName === 'INPUT'){
+                    switch(elem.name){
+                        case 'user_name': elem.addEventListener('input',
+                            () => elem.value = elem.value.replace(/[^А-Яа-яЁё ]/,''));
+                            break;
+                        case 'user_email': elem.addEventListener('input',
+                            () => elem.value = elem.value.replace(/[^\w@.]/,''));
+                            break;
+                        case 'user_phone': elem.addEventListener('input',
+                            () => elem.value = elem.value.replace(/[^0-9+]/,''));
+                            break;
+                        case 'user_message':elem.addEventListener('input',
+                            () => elem.value = elem.value.replace(/[^А-Яа-яЁё\.\,\-\!\?\;\: ]/,''));
+                            break;
                         default: console.error('Не верно названы поля формы!');
                     }
                 }
@@ -334,7 +334,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 statusMessage.textContent = erroMessage;
                 form.reset();
                 setTimeout(() => {
-                statusMessage.textContent = '';
+                    statusMessage.textContent = '';
                 }, 5000);
             });
         });
