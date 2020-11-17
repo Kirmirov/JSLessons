@@ -1,0 +1,16 @@
+.main-box{
+    width: 34rem;
+    height: 10rem;
+    border: 1px solid red;
+}
+
+.input{
+    width: 160px;
+    height: 25px;
+}
+
+.output{
+    width: 163px;
+    height: 28px;
+    border: 1px solid black;
+}
