@@ -9,6 +9,10 @@
     import 'formdata-polyfill';
     import "regenerator-runtime/runtime";
     import 'core-js';
+    import 'url-polyfill';
+    import 'element-remove';
+    import "scroll-behavior-polyfill";
+    import 'whatwg-fetch';
 
     import countTimer from './modules/countTimer';
     import toggleMenu from './modules/toggleMenu';

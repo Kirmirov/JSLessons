@@ -28,12 +28,18 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "core-js": "^3.7.0",
+    "dom-closest": "^0.2.0",
     "element-closest": "^3.0.2",
+    "element-remove": "^1.0.4",
+    "element-remove-polyfill": "^1.1.0",
     "es6-promise": "^4.2.8",
     "fetch-polyfill": "^0.8.2",
     "formdata-polyfill": "^3.0.20",
     "nodelist-foreach-polyfill": "^1.2.0",
-    "regenerator-runtime": "^0.13.7"
+    "regenerator-runtime": "^0.13.7",
+    "scroll-behavior-polyfill": "^2.0.13",
+    "url-polyfill": "^1.1.12",
+    "whatwg-fetch": "^3.5.0"
   },
   "description": ""
 }
