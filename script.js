@@ -6,34 +6,34 @@ const startBtn = document.getElementById('start'),
         inputCash = document.getElementById('cash'),
         inputRezult = document.getElementById('rezult');
 
-// const start = () => {
-//     const getCurrencyList = () => {
-//         return fetch('https://api.exchangeratesapi.io/latest')
-//     };
-//     const calculate = () => {
-//         if(selectFrom.value == selectTo.value){
-//             inputRezult.value = inputCash.value;
-//         }
-//         if(selectFrom.value !== 'RUB'){ // Если не равны рублю, то
-//             courseRu = inputCash.value * currencyList[selectFrom.value]; // Переводим сумму в рубли
-//             inputRezult.value = Math.ceil((courseRu / currencyList[selectTo.value])*100)/100; // Делим на курс и округляем до сотых
-//         } else { // Если не равны
-//             inputRezult.value = Math.ceil((inputCash.value * currencyList[selectTo.value])*100)/100; // Умножаем на курс и округляем до сотых
-//         }
-//     };
-//     calculate();
-// };
-
-const getCurrencyList = () => {
+const start = () => {
+    inputRezult.value = '';
     fetch('https://api.exchangeratesapi.io/latest')
     .then((response) => {
         if(response.status === 200){
-            return response.json();
+            return (response.json());
         }
-    }).then((response) => console.log(response))
+    })
+    .then(response => calculate(response))
     .catch((err) => console.log(err));
 };
 
+const calculate = (response) => {   
+    let currencyList = response.rates;
+    let courseFrom = currencyList[selectFrom.value];
+    let courseTo = currencyList[selectTo.value];
+    if(selectTo.value === response.base) courseTo = 1;
 
-startBtn.addEventListener('click', getCurrencyList);
+    if(selectFrom.value == selectTo.value){
+        inputRezult.value = inputCash.value;
+    }else if (selectFrom.value === response.base) {
+        inputRezult.value = (Math.ceil((inputCash.value * courseTo)*100)/100);
+    }else{
+        let course = inputCash.value * courseTo;
+        inputRezult.value = (Math.ceil((course / courseFrom)*100)/100);
+    }
+        
+    inputCash.value = '';
+};
 
+startBtn.addEventListener('click', start);
