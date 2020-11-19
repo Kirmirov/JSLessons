@@ -1,20 +1,10 @@
+import animate from './animate';
+
 const popupMenu = () => {
     const popup = document.querySelector('.popup'),
         popupBtn = document.querySelectorAll('.popup-btn'),
         popupClose = document.querySelector('.popup-close');
         
-    const animate = ({timing, draw, duration}, callback) => {
-        let start = performance.now();
-        requestAnimationFrame(function animate(time) {
-            let timeFraction = (time - start) / duration;
-            if (timeFraction > 1) timeFraction = 1;
-            let progress = timing(timeFraction);
-            draw(progress); 
-            if (timeFraction < 1) {
-                requestAnimationFrame(animate);
-            }
-        });
-    };
     popupBtn.forEach(elem => {
         elem.addEventListener('click', () => {
             popup.style.display = 'block';

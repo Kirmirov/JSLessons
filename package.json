@@ -29,6 +29,7 @@
     "@babel/polyfill": "^7.12.1",
     "core-js": "^3.7.0",
     "dom-closest": "^0.2.0",
+    "dom-node-polyfills": "^1.0.0",
     "element-closest": "^3.0.2",
     "element-remove": "^1.0.4",
     "element-remove-polyfill": "^1.1.0",

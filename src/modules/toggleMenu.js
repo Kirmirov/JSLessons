@@ -1,7 +1,10 @@
+import smoothScroll from './smoothScroll';
+
 const toggleMenu = () => {
     const menu = document.querySelector('menu');
     
     const actionMenu = () => menu.classList.toggle('active-menu');
+
     document.addEventListener('click', evt =>{
         let target = evt.target;
         if(target.closest('.menu')){

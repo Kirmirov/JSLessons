@@ -1,3 +1,5 @@
+import animate from './animate';
+
 const calculator = (price = 1000) => {
     const calcBlock = document.querySelector('.calc-block'),
         calcType = document.querySelector('.calc-type'),

@@ -1,3 +1,4 @@
+  //Animation pattern
 const animate = ({timing, draw, duration}, callback) => {
     let start = performance.now();
     requestAnimationFrame(function animate(time) {
