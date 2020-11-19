@@ -2,6 +2,18 @@ const sendForm = elementId => {
     const erroMessage = 'Что то пошло не так...',
         successMesage = 'Спасибо! Мы скоро свяжемся с Вами!';
     //Validation form
+    const numberLimit = (elem) =>{
+        elem.addEventListener('focusout', () => {
+            if (!/\+?[78](\d){10}/g.test(elem.value)) elem.value = '';
+        });
+        elem.addEventListener('input', () => {
+            elem.value = elem.value.replace(/[^+0-9]/,'');
+            if (!/^\+?(\d){0,11}$/g.test(elem.value)) {
+                elem.value = elem.value.substring(0, elem.value.length - 1);
+            }
+        }); 
+    };
+
     const setValidation = validatedForm => {
             [...validatedForm].forEach(elem => {
                 if(elem.tagName === 'INPUT'){
@@ -12,8 +24,7 @@ const sendForm = elementId => {
                         case 'user_email': elem.addEventListener('input',
                             () => elem.value = elem.value.replace(/[^\w@.]/,''));
                             break;
-                        case 'user_phone': elem.addEventListener('input',
-                            () => elem.value = elem.value.replace(/[^0-9+]/,''));
+                        case 'user_phone': numberLimit(elem);
                             break;
                         case 'user_message':elem.addEventListener('input',
                             () => elem.value = elem.value.replace(/[^А-Яа-яЁё., ]/,''));
