@@ -36,7 +36,7 @@ const calculator = (price = 1000) => {
             }
         });
     };
-    calcBlock.addEventListener('change', evt => {
+    calcBlock.addEventListener('change', (evt) => {
         const target = evt.target;
         if (target.matches('select') || target.matches('input')) countSum();
     });
