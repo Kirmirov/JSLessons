@@ -23,6 +23,7 @@
     import slider from './modules/slider';
     import changeFotos from './modules/changeFotos';
     import calculator from './modules/calculator';
+    import carousel from './modules/carousel';
     import sendForm from './modules/sendForm';
     // Timer
     countTimer('31 december 2020');
@@ -41,6 +42,8 @@
     //Calculator
     calculator (5000);
     //send form by ajax 
+    carousel.init();
+
     sendForm('form1');
     sendForm('form2');
     sendForm('form3');
